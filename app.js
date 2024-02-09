@@ -7,6 +7,7 @@ const bodyParser = require("body-parser")
 
 //declare routes here
 const products = require('./server/products.js')
+const productsbyId = require('./server/productsById.js')
 
 var app = express()
 app.use(bodyParser.json())
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 //register routes here
 app.use('/', products)
+app.use('/productsById', productsbyId)
 
 //catch 404 and forward to error handler
 

@@ -3,9 +3,14 @@ const connection =require ("../config/dbConnect")
 const express = require("express")
 const router =express.Router()
 
-router.get("/:id", function(req, res, next){
-  const id = req.params.body
-  const querry =  ``
+router.get('/:id', function(req, res, next){
+  const id = req.params.id
+  console.log(id);
+  
+  const querry =  `select  products.productId, productName, productQuantity, productUrl, products.categoryId,products.similarProduts,  productCategory.productCategory from products  join productCategory on
+  products.categoryId = productCategory.categoryId where products.productId = ${id}`
+
+
   connection.query(querry, (err, data) => {
     if (err) {
       next(err)
