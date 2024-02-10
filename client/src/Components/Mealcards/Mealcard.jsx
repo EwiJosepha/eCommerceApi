@@ -1,19 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import './meal.css'
-
+import { Link } from "react-router-dom";
 import axios from "axios";
+import "./meal.css";
 // import Paginatte from "./Paginatte";
 
 function Mealcard() {
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["productcard"],
     queryFn: async () => {
-      const res = await axios.get(
-        "http://localhost:3000"
-      );
+      const res = await axios.get("http://localhost:3000");
 
-      return res.data
+      return res.data;
     },
   });
 
@@ -27,7 +24,6 @@ function Mealcard() {
 
   console.log(data);
 
-
   return (
     <>
       <div className="containerthumb">
@@ -35,9 +31,9 @@ function Mealcard() {
           return (
             <div className="top">
               <div className="subcard" id="subcards">
-                {/* <Link to={`./Details/${item.id}`}> */}
-                  <img src={item.productUrl} id="details-page"  alt=""/>
-                {/* </Link> */}
+                <Link to={`./Details/${item.productId}`}>
+                  <img src={item.productUrl} id="details-page" alt="" />
+                </Link>
 
                 <i className="fa-regular fa-heart"></i>
               </div>
@@ -57,7 +53,7 @@ function Mealcard() {
                 <p id="number">{item.productQuantity}</p>
               </div>
               <div className="date">
-                <button id="addtocard" className="addtocard" >
+                <button id="addtocard" className="addtocard">
                   addtoCard
                 </button>
                 <button id="shortlist">Short List</button>
@@ -65,10 +61,9 @@ function Mealcard() {
             </div>
           );
         })}
-       
       </div>
       <div className="previews">
-         {/* <Paginatte
+        {/* <Paginatte
           postperpage={postperpage}
           totalposts={data.length}
           paginate={paginate}
