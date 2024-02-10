@@ -9,6 +9,8 @@ const bodyParser = require("body-parser")
 const products = require('./server/products.js')
 const productsbyId = require('./server/productsById.js')
 const postProducts = require('./server/post.js')
+const update = require('./server/update.js')
+const deleteproduct = require('./server/delete.js')
 
 var app = express()
 app.use(bodyParser.json())
@@ -28,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', products)
 app.use('/productsById', productsbyId)
 app.use('/post', postProducts)
+app.use('/', update)
+app.use('/', deleteproduct)
 
 
 //catch 404 and forward to error handler
