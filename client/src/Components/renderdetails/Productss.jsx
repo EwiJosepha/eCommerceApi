@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import UpdateProduct from "./UpdateProduct";
 
 function Products() {
   const [singleprod, setSingleprod] = useState([]);
@@ -61,10 +62,10 @@ function Products() {
             <div className="container4">
               <div className="topp">
                 <div className="subcardd " id="subcards">
-                  {data?.similarProduts.map((images) => (
+                  {/* {data?.similarProduts.map((images) => (
                     <img src={images.
                       similarProducts} alt="image" />
-                  ))}
+                  ))} */}
                   <i className="fa-regular fa-heart"></i>
                 </div>
                 <div className="prev-next">
@@ -224,6 +225,7 @@ function Products() {
       <br />
       <hr />
       <hr />
+      {data && <UpdateProduct data={data} />}
     </div>
   );
 }

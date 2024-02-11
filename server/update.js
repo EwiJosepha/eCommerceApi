@@ -42,7 +42,7 @@ router.post('/:id/update', function (req, res, next) {
           });
         }
 
-       connection.commit(function (err) {
+        connection.commit(function (err) {
           if (err) {
             returnconnection.rollback(function () {
               next(err);
@@ -53,7 +53,7 @@ router.post('/:id/update', function (req, res, next) {
         });
       })
     })
-    })
-    })
+  })
+})
 
-    module.exports = router
+module.exports = router
