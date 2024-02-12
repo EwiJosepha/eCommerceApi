@@ -171,7 +171,7 @@ function UpdateProduct({ data }) {
                 width:'40%'
               }}
             >
-              ProdName:
+              ProductName:
               <input
                 type="text"
                 name="productName"

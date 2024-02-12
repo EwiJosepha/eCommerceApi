@@ -16,7 +16,7 @@ router.get('/:id', function(req, res, next){
       next(err)
     } else {
       if ((data.length === 0)) {
-        let error = new Error(`mealproject with mealId ${id} not found`)
+        let error = new Error(`product with  ${id} not found`)
         error.status = 404;
         res.status(404).send(error);
         next(error);
