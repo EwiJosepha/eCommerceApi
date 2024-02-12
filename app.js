@@ -31,7 +31,7 @@ app.use('/', products)
 app.use('/productsById', productsbyId)
 app.use('/post', postProducts)
 app.use('/', update)
-app.use('/', deleteproduct)
+app.use('/delete', deleteproduct)
 
 
 //catch 404 and forward to error handler
