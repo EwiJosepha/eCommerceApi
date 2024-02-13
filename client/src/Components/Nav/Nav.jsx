@@ -22,7 +22,7 @@ function Nav() {
             </h1>
           </Link>
           <div className="navlinks">
-            <Categories />
+            {/* <Categories /> */}
 
             <span id="brand">Brand</span>
             <Link to="./Contact" id="contactdisplay">

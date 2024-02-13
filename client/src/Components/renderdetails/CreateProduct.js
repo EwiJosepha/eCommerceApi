@@ -1,10 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+
+
 
 function CreateProduct() {
   const [modalVisible, setModalVisible] = useState(true);
-  const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [input3, setInput3] = useState('');
   const [input4, setInput4] = useState('');
@@ -12,9 +14,27 @@ function CreateProduct() {
   const [input7, setInput7] = useState('');
   const [similarProducts, setSimilarProducts] = useState([])
 
+  const { data } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await axios.get(`http://localhost:3000/category`);
 
+      return res.data;
+    },
+  });
 
-  const handleSimilarProductChange = (index, key, value) => {
+  console.log(data);
+
+  const handleselect = (id) => {
+    console.log(id);
+    const categorySelected = data.find((cat) => cat.categoryId == id)
+
+    setInput5(id)
+    setInput7(categorySelected.productCategory)
+    // console.log(categery.productCategory);
+  };
+
+const handleSimilarProductChange = (index, key, value) => {
     const newSimilarProducts = [...similarProducts];
     newSimilarProducts[index] = { ...newSimilarProducts[index], [key]: value };
     setSimilarProducts(newSimilarProducts);
@@ -34,7 +54,6 @@ function CreateProduct() {
 
     try {
       const formData = {
-        productId: input1,
         productName: input2,
         productQuantity: input3,
         productUrl: input4,
@@ -96,25 +115,6 @@ function CreateProduct() {
               flexDirection: "column",
               alignItems: "center",
             }}>
-
-              <div style={{ paddingBottom: '10px', width: '100%' }}>
-                <label style={{
-                  marginBottom: "2px",
-                  fontSize: "25px",
-                  fontWeight: 400,
-                  textAlign: "right",
-                  paddingRight: "10px",
-                  width: '40%'
-                }}>
-                  ProductId:
-                  <input
-                    type="text"
-                    value={input1}
-                    onChange={(e) => setInput1(e.target.value)}
-                    style={{ padding: '8px', width: '60%' }}
-                  />
-                </label>
-              </div>
               <div style={{ paddingBottom: '10px', width: '100%' }}>
                 <label style={{
                   marginBottom: "2px",
@@ -169,43 +169,16 @@ function CreateProduct() {
                   />
                 </label>
               </div>
-              <div style={{ paddingBottom: '10px', width: '100%' }}>
-                <label style={{
-                  marginBottom: "2px",
-                  fontSize: "25px",
-                  fontWeight: 400,
-                  textAlign: "right",
-                  paddingRight: "10px",
-                  width: '40%'
-                }}>
-                  categoryId:
-                  <input
-                    type="text"
-                    value={input5}
-                    onChange={(e) => setInput5(e.target.value)}
-                    style={{ padding: '8px', width: '60%' }}
-                  />
-                </label>
-              </div>
               <div>
-              <div style={{ paddingBottom: '10px', width: '100%' }}>
-                <label style={{
-                  marginBottom: "2px",
-                  fontSize: "25px",
-                  fontWeight: 400,
-                  textAlign: "right",
-                  paddingRight: "10px",
-                  width: '40%'
-                }}>
-                  ProdCategory:
-                  <input
-                    type="text"
-                    value={input7}
-                    onChange={(e) => setInput7(e.target.value)}
-                    style={{ padding: '8px', width: '60%' }}
-                  />
-                </label>
-              </div>
+                <div style={{ paddingBottom: '10px', width: '100%' }}>
+                  <select id="cat" onChange={(e) => handleselect(e.target.value)}>
+                    {data?.map((categories, index) => (
+                      <option key={index} value={categories.categoryId}>
+                        {categories.productCategory}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <h3>Similar Products:</h3>
                 {similarProducts?.map((similarProduct, index) => (
                   <div key={index}>
@@ -225,7 +198,7 @@ function CreateProduct() {
               </div>
 
 
-              <br/>
+              <br />
               <div>
                 <button type="submit" style={{
                   backgroundColor: '#4CAF50',
