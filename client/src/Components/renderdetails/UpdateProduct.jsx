@@ -1,56 +1,88 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 function UpdateProduct({ data }) {
   const [updatemodal, setUpdatemodal] = useState(true);
-  const [deleteProd, setDeleteProd] = useState()
+  const [deleteProd, setDeleteProd] = useState();
+  const [catId, setCatId] = useState();
+  const [categoryName, setCategoryName] = useState();
+
+  
+  const selectStyle = {
+    backgroundColor: '#f0f0f0',
+    color: '#333',
+    padding: '5px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    fontSize: '25px',
+    color: '#303e6f',
+  };
 
   const [formData, setFormData] = useState({
-    productId: "",
     productName: "",
     productQuantity: "",
     productUrl: "",
-    categoryId: "",
     // similarProduts: "",
     productCategory: "",
   });
 
-  useEffect(()=>
-    setFormData({
-      productId: data.productId || "",
-      productName: data.productName || "",
-      productQuantity: data.productQuantity || "",
-      productUrl: data.productUrl || "",
-      categoryId: data.categoryId || "",
-      // similarProduts: data.similarProduts || "",
-      productCategory: data.productCategory || "",
-    }),
+  useEffect(
+    () =>
+      setFormData({
+        productName: data.productName || "",
+        productQuantity: data.productQuantity || "",
+        productUrl: data.productUrl || "",
+        // similarProduts: data.similarProduts || "",
+        productCategory: data.productCategory || "",
+      }),
     [data]
   );
-    
+
+  const { data:categoryData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
+      const res = await axios.get(`http://localhost:3000/category`);
+
+      return res.data;
+    },
+  });
+
+  console.log(categoryData);
+
+  const handleselect = (id) => {
+    const categorySelected =categoryData.find((cat) => cat.categoryId == id)
+
+    setCatId(id)
+    setCategoryName(categorySelected.productCategory)
+  };
+  
+  console.log(catId);
+  console.log(categoryName);
+
   function isUpdateTrue() {
     setUpdatemodal(false);
   }
 
-  function closemodal () {
-    setUpdatemodal(true)
+  function closemodal() {
+    setUpdatemodal(true);
   }
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
   async function deletefunction() {
-    const productId = formData.productId
-    setDeleteProd(data = {})
-
+    const productId = formData.productId;
+    setDeleteProd((data = {}));
 
     try {
-      const deleteVals = await axios.delete(`http://localhost:3000/delete/${productId}`)
+      const deleteVals = await axios.delete(
+        `http://localhost:3000/delete/${productId}`
+      );
       console.log(data);
       console.log(deleteVals);
-
     } catch (err) {
       if (err) {
         console.log("not deleted", err.message);
@@ -63,12 +95,11 @@ function UpdateProduct({ data }) {
 
     try {
       const updatedProducted = {
-        productId: data.productId,
         productName: data.productName,
         productQuantity: data.productQuantity,
         productUrl: data.productUrl,
-        categoryId: data.categoryId,
-        productCategory: data.productCategory,
+        categoryId: catId,
+        productCategory: categoryName,
       };
 
       const updateValues = await axios.post(
@@ -86,9 +117,7 @@ function UpdateProduct({ data }) {
     } catch (err) {
       console.log(err.message);
     }
-  }
-
-
+  };
 
   // const handleSimilarProductChange = (index, key, value) => {
   //   const newSimilarProducts = [...similarProducts];
@@ -128,123 +157,89 @@ function UpdateProduct({ data }) {
           </button>
         </div>
       ) : (
-        <div style={{
-          display: 'flex',
-          alignContent: 'center',
-          justifyContent: 'center',
-          background: '#FFD3F8',
-          color: '#303e6f'
-        }}>
-        <form
-          onSubmit={handleSubmit}
+        <div
           style={{
-            maxWidth: "300px",
-            height: "100%",
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            alignContent: "center",
+            justifyContent: "center",
+            background: "#FFD3F8",
+            color: "#303e6f",
           }}
         >
-          <div style={{ paddingBottom: "10px", width: '100%' }}>
-            <label
-              style={{ marginBottom: "2px", fontSize: "25px", fontWeight: 400, width: '40%',  textAlign: "right",
-              paddingRight: "10px", }}
-            >
-              ProductId:
-              <input
-                type="text"
-                name="productId"
-                value={formData.productId}
-                onChange={(e) => handleChange(e)}
-                style={{ padding: "8px", width: '60%' }}
-              />
-            </label>
-          </div>
-          <div style={{ paddingBottom: "10px",width: '100%' }}>
-            <label
-              style={{
-                marginBottom: "2px",
-                fontSize: "25px",
-                fontWeight: 400,
-                textAlign: "right",
-                paddingRight: "10px",
-                width:'40%'
-              }}
-            >
-              ProductName:
-              <input
-                type="text"
-                name="productName"
-                value={formData.productName}
-                onChange={(e) => handleChange(e)}
-                style={{ padding: "8px", width:'60%' }}
-              />
-            </label>
-          </div>
-          <div style={{ paddingBottom: "10px", width: '100%' }}>
-            <label
-              style={{
-                marginBottom: "2px",
-                fontSize: "25px",
-                fontWeight: 400,
-                textAlign: "right",
-                paddingRight: "10px",
-                width: '40%'
-              }}
-            >
-              productQuantity:
-              <input
-                type="text"
-                name="productQuantity"
-                value={formData.productQuantity}
-                onChange={(e) => handleChange(e)}
-                style={{ padding: "8px",width: '60%' }}
-              />
-            </label>
-          </div>
-          <div style={{ paddingBottom: "10px",width: '100%' }}>
-            <label
-              style={{
-                marginBottom: "2px",
-                fontSize: "25px",
-                fontWeight: 400,
-                textAlign: "right",
-                paddingRight: "10px",
-                width: '40%'
-              }}
-            >
-              ProductUrl:
-              <input
-                type="text"
-                name="productUrl"
-                value={formData.productUrl}
-                onChange={(e) => handleChange(e)}
-                style={{ padding: "8px",width: '60%' }}
-              />
-            </label>
-          </div>
-          <div style={{ paddingBottom: "10px",width: '100%' }}>
-            <label
-              style={{
-                marginBottom: "2px",
-                fontSize: "25px",
-                fontWeight: 400,
-                textAlign: "right",
-                paddingRight: "10px",
-                width: '40%'
-              }}
-            >
-              categoryId:
-              <input
-                type="text"
-                name="categoryId"
-                value={formData.categoryId}
-                onChange={(e) => handleChange(e)}
-                style={{ padding: "8px", width: '60%' }}
-              />
-            </label>
-          </div>
-          {/* <div>
+          <form
+            onSubmit={handleSubmit}
+            style={{
+              maxWidth: "300px",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <div style={{ paddingBottom: "10px", width: "100%" }}>
+              <label
+                style={{
+                  marginBottom: "2px",
+                  fontSize: "25px",
+                  fontWeight: 400,
+                  textAlign: "right",
+                  paddingRight: "10px",
+                  width: "40%",
+                }}
+              >
+                ProductName:
+                <input
+                  type="text"
+                  name="productName"
+                  value={formData.productName}
+                  onChange={(e) => handleChange(e)}
+                  style={{ padding: "8px", width: "60%" }}
+                />
+              </label>
+            </div>
+            <div style={{ paddingBottom: "10px", width: "100%" }}>
+              <label
+                style={{
+                  marginBottom: "2px",
+                  fontSize: "25px",
+                  fontWeight: 400,
+                  textAlign: "right",
+                  paddingRight: "10px",
+                  width: "40%",
+                }}
+              >
+                productQuantity:
+                <input
+                  type="text"
+                  name="productQuantity"
+                  value={formData.productQuantity}
+                  onChange={(e) => handleChange(e)}
+                  style={{ padding: "8px", width: "60%" }}
+                />
+              </label>
+            </div>
+            <div style={{ paddingBottom: "10px", width: "100%" }}>
+              <label
+                style={{
+                  marginBottom: "2px",
+                  fontSize: "25px",
+                  fontWeight: 400,
+                  textAlign: "right",
+                  paddingRight: "10px",
+                  width: "40%",
+                }}
+              >
+                ProductUrl:
+                <input
+                  type="text"
+                  name="productUrl"
+                  value={formData.productUrl}
+                  onChange={(e) => handleChange(e)}
+                  style={{ padding: "8px", width: "60%" }}
+                />
+              </label>
+            </div>
+            {/* <div>
           <h3>Similar Products:</h3>
           {similarProducts?.map((similarProduct, index) => (
             <div key={index}>
@@ -269,81 +264,69 @@ function UpdateProduct({ data }) {
           </button>
         </div> */}
 
-          <div style={{ paddingBottom: "10px",width: '100%' }}>
-            <label
-              style={{
-                marginBottom: "2px",
-                fontSize: "25px",
-                fontWeight: 400,
-                textAlign: "right",
-                paddingRight: "10px",
-                width: '40%'
-              }}
-            >
-              ProductCategory:
-              <input
-                type="text"
-                name="productCategory"
-                value={formData.productCategory}
-                onChange={(e) => handleChange(e)}
-                style={{ padding: "8px" ,width: '60%'}}
-              />
-            </label>
-          </div>
-          <div>
-            <button
-              type="submit"
-              style={{
-                backgroundColor: "#4CAF50",
-                color: "white",
-                padding: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                width: "100px",
-              }}
-            >
-              Submit
-            </button>
-            <br />
-            <div style={{display: 'flex', gap:'40px'}}>
-            <button
-            type="button"
-              onClick={deletefunction}
-              style={{
-                background: "#303e6f",
-                borderRadius: "8px",
-                border: "none",
-                padding: "8px",
-                color: "#fff",
-                marginBottom: "100px",
-                float: "left",
-              }}
-            >
-              Delete Product
-            </button>
-            <button
-            type="button"
-              onClick={closemodal}
-              style={{
-                background: "#303e6f",
-                borderRadius: "8px",
-                border: "none",
-                padding: "8px",
-                color: "#fff",
-                marginBottom: "100px",
-                float: "right",
-              }}
-            >
-              close modal
-            </button>
+            <div style={{ paddingBottom: "10px", width: "100%" }}>
+              <select id="cat" style={selectStyle} onChange={(e) => handleselect(e.target.value)}>
+                {categoryData?.map((categories, index) => (
+                  <option key={index} value={categories.categoryId}>
+                    {categories.productCategory}
+                  </option>
+                ))}
+              </select>
             </div>
-            <br />
-          </div>
-        </form>
+            <div>
+              <button
+                type="submit"
+                style={{
+                  backgroundColor: "#4CAF50",
+                  color: "white",
+                  padding: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  width: "100px",
+                }}
+              >
+                Submit
+              </button>
+              <br />
+              <div style={{ display: "flex", gap: "40px" }}>
+                <button
+                  type="button"
+                  onClick={deletefunction}
+                  style={{
+                    background: "#303e6f",
+                    borderRadius: "8px",
+                    border: "none",
+                    padding: "8px",
+                    color: "#fff",
+                    marginBottom: "100px",
+                    float: "left",
+                  }}
+                >
+                  Delete Product
+                </button>
+                <button
+                  type="button"
+                  onClick={closemodal}
+                  style={{
+                    background: "#303e6f",
+                    borderRadius: "8px",
+                    border: "none",
+                    padding: "8px",
+                    color: "#fff",
+                    marginBottom: "100px",
+                    float: "right",
+                  }}
+                >
+                  close modal
+                </button>
+              </div>
+              <br />
+            </div>
+          </form>
         </div>
       )}
     </div>

@@ -14,6 +14,27 @@ function CreateProduct() {
   const [input7, setInput7] = useState('');
   const [similarProducts, setSimilarProducts] = useState([])
 
+  const selectStyle = {
+    backgroundColor: '#f0f0f0',
+    color: '#333',
+    padding: '5px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    fontSize: '25px',
+    color: '#303e6f',
+    marginLeft: '-75px'
+  };
+  const selectStyle2 = {
+    backgroundColor: '#f0f0f0',
+    color: '#333',
+    padding: '5px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    fontSize: '18px',
+    color: '#303e6f',
+    marginLeft: '-75px'
+  };
+
   const { data } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
@@ -170,16 +191,17 @@ const handleSimilarProductChange = (index, key, value) => {
                 </label>
               </div>
               <div>
-                <div style={{ paddingBottom: '10px', width: '100%' }}>
-                  <select id="cat" onChange={(e) => handleselect(e.target.value)}>
+                <div style={{ paddingBottom: '10px' }}>
+                <h3 style={{marginLeft: '-75px'}}>Product Category:</h3>
+                  <select name="cat" style={selectStyle} onChange={(e) => handleselect(e.target.value)}>
                     {data?.map((categories, index) => (
-                      <option key={index} value={categories.categoryId}>
+                      <option key={index} style={selectStyle} value={categories.categoryId}>
                         {categories.productCategory}
                       </option>
                     ))}
                   </select>
                 </div>
-                <h3>Similar Products:</h3>
+                <h3 style={{marginLeft: '-75px'}}>Similar Products:</h3>
                 {similarProducts?.map((similarProduct, index) => (
                   <div key={index}>
                     <input
@@ -194,7 +216,7 @@ const handleSimilarProductChange = (index, key, value) => {
                     />
                   </div>
                 ))}
-                <button type="button" onClick={handleSimilarProductAdd}>Add Similar Product</button>
+                <button type="button" onClick={handleSimilarProductAdd} style={selectStyle2}> Add Similar Product</button>
               </div>
 
 
