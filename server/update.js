@@ -3,19 +3,22 @@ const connection = require('../config/dbConnect')
 const express = require('express')
 const router = express.Router()
 
-router.post('/:id/update', function (req, res, next) {
+router.post('/:id/:catId/update', function (req, res, next) {
 
   const id = req.params.id
+  const catId = req.params.catId
+  console.log(catId);
   const {
     productName,
     productQuantity,
     productUrl,
     productCategory
   } = req.body
-  const updatedata = `UPDATE products  SET productName=?,productQuantity=?, productUrl=? WHERE productId=?;`
-  const productCategoryUpdateQuery = `UPDATE productCategory SET ProductCategory=? WHERE categoryId= categoryId`;
+  console.log(req.body);
+  const updatedata = `UPDATE products  SET productName=?,productQuantity=?, productUrl=? WHERE productId=${id};`
+  const productCategoryUpdateQuery = `UPDATE productCategory SET ProductCategory=? WHERE categoryId= ${catId}`;
   const values = [productName, productQuantity, productUrl, id];
-  const catvalues = [productCategory, id]
+  const catvalues = [productCategory, catId]
   connection.beginTransaction(function (err) {
     if (err) {
       return next(err);

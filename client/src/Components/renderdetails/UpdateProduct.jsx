@@ -39,7 +39,7 @@ function UpdateProduct({ data }) {
   );
 
   const { data:categoryData } = useQuery({
-    queryKey: ["categories"],
+    queryKey: ["cate"],
     queryFn: async () => {
       const res = await axios.get(`http://localhost:3000/category`);
 
@@ -49,10 +49,11 @@ function UpdateProduct({ data }) {
 
 
   const handleselect = (id) => {
-    const categorySelected =categoryData.find((cat) => cat.categoryId == id)
-
-    setCatId(id)
-    setCategoryName(categorySelected.productCategory)
+    setCatId(parseInt(id, 10))
+    setCategoryName((prevCategoryName) => {
+      const categorySelected = categoryData.find((cat) => cat.categoryId == id);
+      return categorySelected ? categorySelected.productCategory : "";
+    });
   };
 
   console.log(catId);
@@ -94,15 +95,15 @@ function UpdateProduct({ data }) {
     try {
       const updatedProducted = {
         productId: data.productId,
-        productName: data.productName,
-        productQuantity: data.productQuantity,
-        productUrl: data.productUrl,
+        productName: formData.productName,
+        productQuantity: formData.productQuantity,
+        productUrl: formData.productUrl,
         categoryId: catId,
         productCategory: categoryName,
       };
 
       const updateValues = await axios.post(
-        `http://localhost:3000/${updatedProducted.productId}/update`,
+        `http://localhost:3000/${updatedProducted.productId}/${catId}/update`,
         updatedProducted,
         {
           headers: {
