@@ -7,16 +7,14 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-
- .fa-solid {
+.fa-solid {
   padding: 10px;
  }
 
- .subcard {
+.subcard {
   gap: 30px;
   position: relative;
 }
-
 
 .subcard img {
   width: 100%;

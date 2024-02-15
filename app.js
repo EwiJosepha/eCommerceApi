@@ -12,6 +12,7 @@ const postProducts = require('./server/post.js')
 const update = require('./server/update.js')
 const deleteproduct = require('./server/delete.js')
 const category = require('./server/byCategory.js')
+const category1 = require('./server/productcategory.js')
 
 var app = express()
 app.use(bodyParser.json())
@@ -34,6 +35,7 @@ app.use('/post', postProducts)
 app.use('/', update)
 app.use('/delete', deleteproduct)
 app.use('/category', category)
+app.use('/category1', category1)
 
 
 //catch 404 and forward to error handler

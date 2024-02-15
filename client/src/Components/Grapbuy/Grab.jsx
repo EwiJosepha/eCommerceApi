@@ -1,4 +1,6 @@
 import "./grab.css"
+import avatarImage from "../../assets/images/My project 1.png";
+
 function Grab() {
   return (
     <>
@@ -11,7 +13,7 @@ function Grab() {
           </div>
 
           <div className="avatar">
-            <img src="src/assets/images/My project 1.png" id="img" />
+            <img src={avatarImage}  alt="avatar"/>
           </div>
         </div>
       </div>

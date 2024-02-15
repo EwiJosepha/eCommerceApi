@@ -1,4 +1,4 @@
-'use strick'
+'use strict'
 const connection = require('../config/dbConnect')
 const express = require('express')
 const router = express.Router()

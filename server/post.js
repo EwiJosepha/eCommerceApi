@@ -28,8 +28,6 @@ router.post('/', function (req, res, next) {
 
     connection.query(productCategoryQuery, [productCategory], function (error, results) {
       if (error) {
-        console.log("products querry executed");
-
         return connection.rollback(function () {
           next(error);
         });
@@ -46,13 +44,13 @@ router.post('/', function (req, res, next) {
         }
 
         // Insert into mealInstructions table
+
         connection.commit(function (err) {
           if (err) {
             return connection.rollback(function () {
               next(err);
             });
           }
-          console.log('Transaction Complete.');
           res.status(201).send(results);
         });
       });

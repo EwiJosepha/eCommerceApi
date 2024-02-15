@@ -5,13 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 function UpdateProduct({ data }) {
   const [updatemodal, setUpdatemodal] = useState(true);
   const [deleteProd, setDeleteProd] = useState();
-  const [catId, setCatId] = useState();
-  const [categoryName, setCategoryName] = useState();
+  const [catId, setCatId] = useState("");
+  const [categoryName, setCategoryName] = useState("");
 
   
   const selectStyle = {
     backgroundColor: '#f0f0f0',
-    color: '#333',
     padding: '5px',
     borderRadius: '4px',
     border: '1px solid #ccc',
@@ -48,7 +47,6 @@ function UpdateProduct({ data }) {
     },
   });
 
-  console.log(categoryData);
 
   const handleselect = (id) => {
     const categorySelected =categoryData.find((cat) => cat.categoryId == id)
@@ -56,7 +54,7 @@ function UpdateProduct({ data }) {
     setCatId(id)
     setCategoryName(categorySelected.productCategory)
   };
-  
+
   console.log(catId);
   console.log(categoryName);
 
@@ -95,6 +93,7 @@ function UpdateProduct({ data }) {
 
     try {
       const updatedProducted = {
+        productId: data.productId,
         productName: data.productName,
         productQuantity: data.productQuantity,
         productUrl: data.productUrl,
@@ -239,30 +238,6 @@ function UpdateProduct({ data }) {
                 />
               </label>
             </div>
-            {/* <div>
-          <h3>Similar Products:</h3>
-          {similarProducts?.map((similarProduct, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                value={similarProduct.key}
-                onChange={(e) =>
-                  handleSimilarProductChange(index, "key", e.target.value)
-                }
-              />
-              <input
-                type="text"
-                value={similarProduct.value}
-                onChange={(e) =>
-                  handleSimilarProductChange(index, "value", e.target.value)
-                }
-              />
-            </div>
-          ))}
-          <button type="button" onClick={handleSimilarProductAdd}>
-            Add Similar Product
-          </button>
-        </div> */}
 
             <div style={{ paddingBottom: "10px", width: "100%" }}>
               <select id="cat" style={selectStyle} onChange={(e) => handleselect(e.target.value)}>

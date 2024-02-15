@@ -10,24 +10,16 @@ router.post('/:id/update', function (req, res, next) {
     productName,
     productQuantity,
     productUrl,
-    similarProduts,
     productCategory
   } = req.body
-  const updatedata = `UPDATE products  SET productName=?,productQuantity=?, productUrl=?, similarProduts=? WHERE productId=?;`
+  const updatedata = `UPDATE products  SET productName=?,productQuantity=?, productUrl=? WHERE productId=?;`
   const productCategoryUpdateQuery = `UPDATE productCategory SET ProductCategory=? WHERE categoryId= categoryId`;
-
-  const values = [productName, productQuantity, productUrl, JSON.stringify(similarProduts), id];
-
+  const values = [productName, productQuantity, productUrl, id];
   const catvalues = [productCategory, id]
-
-  console.log("Query executed:", updatedata);
-  console.log("Query values:", values);
-
   connection.beginTransaction(function (err) {
     if (err) {
       return next(err);
     }
-
     connection.query(updatedata, values, function (err, productData) {
       if (err) {
         return connection.rollback(function () {
