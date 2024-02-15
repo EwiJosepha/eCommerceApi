@@ -5,7 +5,6 @@ const router =express.Router()
 
 router.get('/:id', function(req, res, next){
   const id = req.params.id
-  console.log(id);
   
   const querry =  `select  products.productId, productName, productQuantity, productUrl, products.categoryId,products.similarProduts,  productCategory.productCategory from products  join productCategory on
   products.categoryId = productCategory.categoryId where products.productId = ${id}`

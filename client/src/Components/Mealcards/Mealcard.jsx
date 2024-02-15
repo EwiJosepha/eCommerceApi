@@ -44,7 +44,7 @@ function Mealcard() {
     queryKey: ["categoryName"],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:3000/category1?productCategory=${categoryName}`
+        `http://localhost:3000/category1/${categoryName}`
       );
       return res.data;
     },
