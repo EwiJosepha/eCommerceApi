@@ -19,6 +19,7 @@ function UpdateProduct({ data }) {
   };
 
   const [formData, setFormData] = useState({
+    productId: "",
     productName: "",
     productQuantity: "",
     productUrl: "",
@@ -29,6 +30,7 @@ function UpdateProduct({ data }) {
   useEffect(
     () =>
       setFormData({
+        productId: data.productId || "",
         productName: data.productName || "",
         productQuantity: data.productQuantity || "",
         productUrl: data.productUrl || "",
@@ -49,7 +51,7 @@ function UpdateProduct({ data }) {
 
 
   const handleselect = (id) => {
-    setCatId(parseInt(id, 10))
+    setCatId(parseInt(id))
     setCategoryName((prevCategoryName) => {
       const categorySelected = categoryData.find((cat) => cat.categoryId == id);
       return categorySelected ? categorySelected.productCategory : "";

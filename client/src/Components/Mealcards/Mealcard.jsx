@@ -96,12 +96,13 @@ function Mealcard() {
       {hide?
       <>
         {catdata2?.map((item) => {
+          console.log(item);
           return (
             <div className="top">
               <div className="subcard" id="subcards">
-                {/* <Link to={`./Details/${item.productId}`}> */}
+                <Link to={`./Details/${item.productId}`}>
                   <img src={item.productUrl} id="details-page" alt="" />
-                {/* </Link> */}
+                </Link>
 
                 <i className="fa-regular fa-heart"></i>
               </div>

@@ -9,7 +9,9 @@ router.get('/:categoryName', function (req, res, next) {
   const {categoryName} = req.params
   console.log("cat",categoryName);
   const query =
-    `select products.productName,
+    `select
+    products.productId,
+    products.productName,
     products.productQuantity,
     products.productUrl,
     products.categoryId,
@@ -18,7 +20,7 @@ router.get('/:categoryName', function (req, res, next) {
   FROM
     products
   JOIN
-    productCategory ON products.categoryId = productCategory.categoryId where   productCategory.productCategory
+    productCategory ON products.categoryId = productCategory.categoryId where productCategory.productCategory
   ="${categoryName}"
   ;`
   console.log(categoryName);
