@@ -8,14 +8,13 @@ function UpdateProduct({ data }) {
   const [catId, setCatId] = useState("");
   const [categoryName, setCategoryName] = useState("");
 
-  
   const selectStyle = {
-    backgroundColor: '#f0f0f0',
-    padding: '5px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    fontSize: '25px',
-    color: '#303e6f',
+    backgroundColor: "#f0f0f0",
+    padding: "5px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    fontSize: "25px",
+    color: "#303e6f",
   };
 
   const [formData, setFormData] = useState({
@@ -30,6 +29,7 @@ function UpdateProduct({ data }) {
   useEffect(
     () =>
       setFormData({
+        ...formData,
         productId: data.productId || "",
         productName: data.productName || "",
         productQuantity: data.productQuantity || "",
@@ -40,7 +40,7 @@ function UpdateProduct({ data }) {
     [data]
   );
 
-  const { data:categoryData } = useQuery({
+  const { data: categoryData } = useQuery({
     queryKey: ["cate"],
     queryFn: async () => {
       const res = await axios.get(`http://localhost:3000/category`);
@@ -49,12 +49,11 @@ function UpdateProduct({ data }) {
     },
   });
 
-
   const handleselect = (id) => {
-    setCatId(parseInt(id))
+    setCatId(parseInt(id));
     setCategoryName((prevCategoryName) => {
       const categorySelected = categoryData.find((cat) => cat.categoryId == id);
-      return categorySelected ? categorySelected.productCategory : "";
+      return categorySelected ? categorySelected.productCategory : prevCategoryName;
     });
   };
 
@@ -243,7 +242,14 @@ function UpdateProduct({ data }) {
             </div>
 
             <div style={{ paddingBottom: "10px", width: "100%" }}>
-              <select id="cat" style={selectStyle} onChange={(e) => handleselect(e.target.value)}>
+              <select
+                id="cat"
+                style={selectStyle}
+                value={formData.categoryId}
+                onChange={(e) => {
+                  handleselect(e.target.value);
+                }}
+              >
                 {categoryData?.map((categories, index) => (
                   <option key={index} value={categories.categoryId}>
                     {categories.productCategory}

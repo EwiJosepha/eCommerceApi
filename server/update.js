@@ -6,6 +6,7 @@ const router = express.Router()
 router.post('/:id/:catId/update', function (req, res, next) {
   const id = req.params.id
   const catId = req.params.catId
+  const numberCat = +catId
   console.log(catId);
   const {
     productId,
@@ -18,7 +19,8 @@ router.post('/:id/:catId/update', function (req, res, next) {
   const updatedata = `UPDATE products  SET productName=?,productQuantity=?, productUrl=? WHERE productId=?;`
   const productCategoryUpdateQuery = `UPDATE productCategory SET ProductCategory=? WHERE categoryId= ?`;
   const values = [productName, productQuantity, productUrl, id];
-  const catvalues = [productCategory, catId]
+  const catvalues = [productCategory, numberCat]
+  console.log(catvalues);
   connection.beginTransaction(function (err) {
     if (err) {
       return next(err);
@@ -39,7 +41,7 @@ router.post('/:id/:catId/update', function (req, res, next) {
         }
         connection.commit(function (err) {
           if (err) {
-            returnconnection.rollback(function () {
+            return connection.rollback(function () {
               next(err);
             });
           }

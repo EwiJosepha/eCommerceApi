@@ -69,6 +69,10 @@ const handleSimilarProductChange = (index, key, value) => {
     setModalVisible(false);
   };
 
+  const handleCloseClick = () => {
+    setModalVisible(true);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -234,7 +238,7 @@ const handleSimilarProductChange = (index, key, value) => {
                   cursor: 'pointer',
                   width: '100px'
                 }}>Submit</button><br />
-                <button type='Button' onClick={handleCreateClick} style={{ background: '#303e6f', borderRadius: '8px', border: 'none', padding: '8px', color: '#fff', marginBottom: '100px', float: 'right' }}>close modal</button><br />
+                <button type='Button' onClick={handleCloseClick} style={{ background: '#303e6f', borderRadius: '8px', border: 'none', padding: '8px', color: '#fff', marginBottom: '100px', float: 'right' }}>close modal</button><br />
               </div>
             </form>
 
