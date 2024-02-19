@@ -49,6 +49,8 @@ function Mealcard() {
     enabled: !!categoryName,
   });
 
+  //handles option clicked o or selected
+
   const handleselect = async (id) => {
     console.clear();
     console.log('fetching ', id);
@@ -64,6 +66,8 @@ function Mealcard() {
       refetch(); // reloadig only when categoryname has changed
     }
   }, [categoryName]);
+
+  // display the followings incase of errors during fetch
 
   if (error) {
     return <h1>An error Occured</h1>;
