@@ -1,14 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./meal.css";
 // import Paginatte from "./Paginatte";
 
 function Mealcard() {
   const [catId, setCatId] = useState("");
+
   const [categoryName, setCategoryName] = useState("");
-  const[hide, setHide]=useState(false)
+  const [hide, setHide] = useState(false);
   const { data, isLoading, error } = useQuery({
     queryKey: ["productcard"],
     queryFn: async () => {
@@ -33,14 +34,11 @@ function Mealcard() {
   const { data: catdata } = useQuery({
     queryKey: ["categor"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://localhost:3000/category`
-      );
+      const res = await axios.get(`http://localhost:3000/category`);
       return res.data;
     },
-
   });
-  const { data: catdata2, refetch} = useQuery({
+  const { data: catdata2, refetch } = useQuery({
     queryKey: ["categoryName"],
     queryFn: async () => {
       const res = await axios.get(
@@ -51,15 +49,21 @@ function Mealcard() {
     enabled: !!categoryName,
   });
 
-  const handleselect = async(id) => {
+  const handleselect = async (id) => {
+    console.clear();
+    console.log('fetching ', id);
     const categorySelected = catdata.find((cat) => cat.categoryId == id);
 
     setCatId(id);
     setCategoryName(categorySelected.productCategory);
-    setHide(true)
-    refetch()
-
+    setHide(true);
   };
+
+  useEffect(() => {
+    if (categoryName) {
+      refetch(); // reloadig only when categoryname has changed
+    }
+  }, [categoryName]);
 
   if (error) {
     return <h1>An error Occured</h1>;
@@ -90,83 +94,85 @@ function Mealcard() {
           ))}
         </select>
       </div>
-     
 
       <div className="containerthumb">
-      {hide?
-      <>
-        {catdata2?.map((item) => {
-          console.log(item);
-          return (
-            <div className="top">
-              <div className="subcard" id="subcards">
-                <Link to={`./Details/${item.productId}`}>
-                  <img src={item.productUrl} id="details-page" alt="" />
-                </Link>
+        {hide ? (
+          <>
+            {catdata2?.map((item) => {
+              console.log(item);
+              return (
+                <div className="top">
+                  <div className="subcard" id="subcards">
+                    <Link to={`./Details/${item.productId}`}>
+                      <img src={item.productUrl} id="details-page" alt="" />
+                    </Link>
 
-                <i className="fa-regular fa-heart"></i>
-              </div>
+                    <i className="fa-regular fa-heart"></i>
+                  </div>
 
-              <div className="snikersprice">
-                <span id="snykers">{item.productName}</span>
-                <span id="snykers-price">{item.productPrice}</span>
-              </div>
+                  <div className="snikersprice">
+                    <span id="snykers">{item.productName}</span>
+                    <span id="snykers-price">{item.productPrice}</span>
+                  </div>
 
-              <div className="shoes-available">
-                <p id="shoes"> 5 types of shoes available</p>
-              </div>
-              <div className="stars">
-                <span id="star" className="fa-star">
-                  {/* {item.rating} */}
-                </span>
-                <p id="number">{item.productQuantity}</p>
-              </div>
-              <div className="date">
-                <button id="addtocard" className="addtocard">
-                  addtoCard
-                </button>
-                <button id="shortlist">Short List</button>
-              </div>
-            </div>
-          )
-        })}</>:
-        <>
-        {data.map((item) => {
-          return (
-            <div className="top">
-              <div className="subcard" id="subcards">
-                <Link to={`./Details/${item.productId}`}>
-                  <img src={item.productUrl} id="details-page" alt="" />
-                </Link>
+                  <div className="shoes-available">
+                    <p id="shoes"> 5 types of shoes available</p>
+                  </div>
+                  <div className="stars">
+                    <span id="star" className="fa-star">
+                      {/* {item.rating} */}
+                    </span>
+                    <p id="number">{item.productQuantity}</p>
+                  </div>
+                  <div className="date">
+                    <button id="addtocard" className="addtocard">
+                      addtoCard
+                    </button>
+                    <button id="shortlist">Short List</button>
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            {data.map((item) => {
+              return (
+                <div className="top">
+                  <div className="subcard" id="subcards">
+                    <Link to={`./Details/${item.productId}`}>
+                      <img src={item.productUrl} id="details-page" alt="" />
+                    </Link>
 
-                <i className="fa-regular fa-heart"></i>
-              </div>
+                    <i className="fa-regular fa-heart"></i>
+                  </div>
 
-              <div className="snikersprice">
-                <span id="snykers">{item.productName}</span>
-                <span id="snykers-price">{item.productPrice}</span>
-              </div>
+                  <div className="snikersprice">
+                    <span id="snykers">{item.productName}</span>
+                    <span id="snykers-price">{item.productPrice}</span>
+                  </div>
 
-              <div className="shoes-available">
-                <p id="shoes"> 5 types of shoes available</p>
-              </div>
-              <div className="stars">
-                <span id="star" className="fa-star">
-                  {/* {item.rating} */}
-                </span>
-                <p id="number">{item.productQuantity}</p>
-              </div>
-              <div className="date">
-                <button id="addtocard" className="addtocard">
-                  addtoCard
-                </button>
-                <button id="shortlist">Short List</button>
-              </div>
-            </div>
-          )
-        })}</>}
+                  <div className="shoes-available">
+                    <p id="shoes"> 5 types of shoes available</p>
+                  </div>
+                  <div className="stars">
+                    <span id="star" className="fa-star">
+                      {/* {item.rating} */}
+                    </span>
+                    <p id="number">{item.productQuantity}</p>
+                  </div>
+                  <div className="date">
+                    <button id="addtocard" className="addtocard">
+                      addtoCard
+                    </button>
+                    <button id="shortlist">Short List</button>
+                  </div>
+                </div>
+              );
+            })}
+          </>
+        )}
       </div>
-     
     </>
   );
 }

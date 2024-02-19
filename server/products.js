@@ -9,7 +9,8 @@ const router = express.Router()
 router.get('/', function (req, res, next) {
   const query =
     `select  products.productId, productName, productQuantity, productUrl, products.categoryId,products.similarProduts,  productCategory.productCategory from products  join productCategory on
-   products.categoryId = productCategory.categoryId
+   products.categoryId = productCategory.categoryId ;
+
   ;`
   console.log(res.statusCode)
   connection.query(query, (err, data) => {

@@ -7,16 +7,17 @@ import UpdateProduct from "./UpdateProduct";
 
 function Products() {
   const [singleprod, setSingleprod] = useState([]);
+  const [des, setDes] = useState("");
+  const [similar, setSimilar] = useState([]) 
 
   const params = useParams();
   const { data, isLoading, error } = useQuery({
     queryKey: ["singlemeal"],
     queryFn: async () => {
       const id = params.id;
-      console.log(id);
       const res = await axios.get(`http://localhost:3000/productsById/${id}`);
-      console.log(res);
-
+      setDes(res.data.description);
+      setSimilar(res.data.similarProduts);
       setsingleitem();
       return res.data;
     },
@@ -62,15 +63,14 @@ function Products() {
             <div className="container4">
               <div className="topp">
                 <div className="subcardd " id="subcards">
-                  {/* {data?.similarProduts.map((images) => (
-                    <img src={images.
-                      similarProducts} alt="image" />
-                  ))} */}
+                  {similar?.map((images) => (
+                    <img src={images.similarProducts} alt="image" />
+                  ))}
                   <i className="fa-regular fa-heart"></i>
                 </div>
                 <div className="prev-next">
-                  <i className="fa-solid fa-chevron-left" id="prev"></i>
-                  <i className="fa-solid fa-chevron-right" id="next"></i>
+                  {/* <i className="fa-solid fa-chevron-left" id="prev"></i>
+                  <i className="fa-solid fa-chevron-right" id="next"></i> */}
                 </div>
               </div>
             </div>
@@ -78,7 +78,11 @@ function Products() {
             <div className="mainlydescription">
               <div className="display-des">
                 <h3 id="prod-description">Product Description</h3>
-                {/* <p id="pr"><i>{data?.description}</i></p> */}
+                {des?.map((des) => (
+                  <p id="pr">
+                    <i>{des.productDescription}</i>
+                  </p>
+                ))}
               </div>
             </div>
           </div>

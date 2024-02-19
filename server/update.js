@@ -17,7 +17,7 @@ router.post('/:id/:catId/update', function (req, res, next) {
   } = req.body
   console.log(req.body);
   const updatedata = `UPDATE products  SET productName=?,productQuantity=?, productUrl=? WHERE productId=?;`
-  const productCategoryUpdateQuery = `UPDATE productCategory SET ProductCategory=? WHERE categoryId= ?`;
+  const productCategoryUpdateQuery = `UPDATE productCategory SET productCategory=? WHERE categoryId=?`;
   const values = [productName, productQuantity, productUrl, id];
   const catvalues = [productCategory, numberCat]
   console.log(catvalues);
