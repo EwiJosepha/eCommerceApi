@@ -1,13 +1,14 @@
 require("dotenv").config()
-const createError = require("http-errors")
-const express = require("express")
-const cors = require("path")
+var createError = require("http-errors")
+var express = require("express")
+const cors = require("cors")
+var path = require('path')
 const bodyParser = require("body-parser")
 
 //declare routes here
-const products = require('/server/products')
+const products = require('./server/products.js')
 
-const app = express()
+var app = express()
 app.use(bodyParser.json())
 
 //view engine setup
@@ -22,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 //register routes here
-app.use('/products', products)
+app.use('/', products)
 
 //catch 404 and forward to error handler
 
@@ -41,4 +42,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-module.exports = app
+
+module.exports = app;
