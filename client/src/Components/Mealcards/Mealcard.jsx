@@ -72,11 +72,6 @@ function Mealcard() {
   if (isLoading) {
     return <h1>Loading ...</h1>;
   }
-
-  console.log(data);
-  console.log(catdata);
-  console.log(catdata2);
-  console.log(categoryName);
   return (
     <>
       <h3>Filter by Categories</h3>

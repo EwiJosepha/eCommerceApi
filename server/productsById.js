@@ -17,7 +17,6 @@ router.get('/:id', function (req, res, next) {
         let error = new Error(`product with  ${id} not found`)
         error.status = 404;
         res.status(404).send(error);
-        // next(error);
       } else {
         res.setHeader('Content-Type', 'application/json');
         res.send(data[0])
