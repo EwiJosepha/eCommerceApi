@@ -112,23 +112,11 @@ function UpdateProduct({ data }) {
           },
         }
       );
-
-      console.log("Meal updated successfully:", updateValues.data);
-      console.log(updatedProducted);
     } catch (err) {
       console.log(err.message);
     }
   };
 
-  // const handleSimilarProductChange = (index, key, value) => {
-  //   const newSimilarProducts = [...similarProducts];
-  //   newSimilarProducts[index] = { ...newSimilarProducts[index], [key]: value };
-  //   setSimilarProducts(newSimilarProducts);
-  // };
-
-  // const handleSimilarProductAdd = () => {
-  //   setSimilarProducts([...similarProducts, { key: "", value: "" }]);
-  // };
 
   return (
     <div>
